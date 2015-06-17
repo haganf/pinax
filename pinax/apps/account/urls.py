@@ -1,6 +1,6 @@
 from django.conf import settings
-from django.conf.urls.defaults import patterns, url
-
+from django.conf.urls import patterns, url
+from django.views.generic import TemplateView
 
 if settings.ACCOUNT_OPEN_SIGNUP:
     signup_view = "pinax.apps.account.views.signup"
@@ -16,7 +16,7 @@ urlpatterns = patterns("",
     url(r"^password_change/$", "pinax.apps.account.views.password_change", name="acct_passwd"),
     url(r"^password_set/$", "pinax.apps.account.views.password_set", name="acct_passwd_set"),
     url(r"^password_delete/$", "pinax.apps.account.views.password_delete", name="acct_passwd_delete"),
-    url(r"^password_delete/done/$", "django.views.generic.simple.direct_to_template", {"template": "account/password_delete_done.html"}, name="acct_passwd_delete_done"),
+    url(r"^password_delete/done/$", TemplateView.as_view(template_name="account/password_delete_done.html"), name="acct_passwd_delete_done"),
     url(r"^timezone/$", "pinax.apps.account.views.timezone_change", name="acct_timezone_change"),
     url(r"^language/$", "pinax.apps.account.views.language_change", name="acct_language_change"),
     url(r"^logout/$", "pinax.apps.account.views.logout", {"template_name": "account/logout.html"}, name="acct_logout"),
