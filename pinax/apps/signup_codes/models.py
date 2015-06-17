@@ -1,4 +1,5 @@
 import datetime
+import hashlib
 
 from django.conf import settings
 from django.core.mail import send_mail
@@ -6,7 +7,8 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.template.loader import render_to_string
-from django.utils.hashcompat import sha_constructor
+#from django.utils.hashcompat import sha_constructor
+
 
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
@@ -41,7 +43,7 @@ class SignupCode(models.Model):
         ]
         if group:
             bits.append("%s%s" % (group._meta, group.pk))
-        code = sha_constructor("".join(bits)).hexdigest()
+        code = hashlib.sha1("".join(bits)).hexdigest()
         return cls(code=code, email=email, max_uses=1, expiry=expiry)
     
     @classmethod
